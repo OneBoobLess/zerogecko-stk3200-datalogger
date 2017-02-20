@@ -1,19 +1,35 @@
+Board:  Silicon Labs EFM32ZG-STK3200 Development Kit
+Device: EFM32ZG222F32
+
 Digital clock with
   Real Time Clock DS3231 (I2C),
   Rel. Humidity and Temperature Sensor Si7021 (I2C),
   and SD Card (SPI) with Memory LCD (SPI)
 on the EFM32ZG-STK3200.
 
-The user can start/stop data recording by pressing PB1 button.
+This is extension of the work by Jan Cumps, from 2014, posted at
+https://www.element14.com/community/groups/roadtest/blog/2014/11/17/zero-gecko-follow-up-talking-to-a-microsd-card-via-spi
+which allows data logging through SD Card to EFM32 Zero Gecko STK3200.
 
-The user can set time, and date using PB0 button, with Capsense buttons.
+In the present project, the digital clock (example project for EFM32ZG) is combined
+with the environmental monitor (temperature and relative humidity), where all data
+is displayed on the LCD screen.
+In addition, the data can be saved to the SD card, if user chooses so.
 
-What makes this project special, is that it allows for simultaneous use
-of the display over SPI bus, as well as writing the data to the SD Card.
+Challange of the project is how to share SPI bus between the display and the SD Card,
+considering that two library combined require more memory then what EMF32ZG has (4kB RAM),
+see discussion at
+http://community.silabs.com/t5/32-bit-MCU/ZeroGecko-with-SDK3200-How-to-add-SPI-SD-card-to-the-GLIB-ef/td-p/189292
 
-For purpose of this project the original 16x20 font was expanded so to
-include numbers and some text characters of the textdisplay driver.
+This being said, the datalogger is operated as follows:
+1. The user can start/stop data recording by pressing PB1 button.
+2. The user can set time, and date, and write it to DS3231. PB0 button is used to select
+what to change, while the Capsense buttons are used to increase/decrease current value. Cycling
+PB0 makes a bar be drawn under time/date piece that can be changed. Continue cycling PB0 until
+the bar is no longer visible makes device accepts new values and store them in DS3231.
 
-Board:  Silicon Labs EFM32ZG-STK3200 Development Kit
-Device: EFM32ZG222F32
+Also, for this project the original 16x20 numbers-only font was expanded with few characters ('C', '.' and '%')
+so that temperature and relative humidity can be printed in the same size as the time digits
+with their units.
+
 Author: OneBoobLess, 2017
